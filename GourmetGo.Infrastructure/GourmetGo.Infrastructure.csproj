@@ -9,7 +9,18 @@
   <ItemGroup>
     <Folder Include="Datos\" />
     <Folder Include="Migraciones\" />
-    <Folder Include="Repositorios\" />
+	  <Folder Include="Contexto\" />
+	  <Folder Include="Repositorios\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+  </ItemGroup>
+	<ItemGroup>
+		<!-- Referencia a la capa Domain -->
+		<ProjectReference Include="..\GourmetGo.Domain\GourmetGo.Domain.csproj" />
+		<!-- Referencia a la capa Application -->
+		<ProjectReference Include="..\GourmetGo.Application\GourmetGo.Application.csproj" />
+	</ItemGroup>
 
 </Project>

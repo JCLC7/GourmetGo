@@ -8,7 +8,13 @@
 
   <ItemGroup>
     <Folder Include="DTOs\" />
-    <Folder Include="Servicios\" />
+	  <Folder Include="Interfaces\" />
+	  <Folder Include="Servicios\" />
   </ItemGroup>
+	
+<ItemGroup>
+		<!-- Referencia a la capa Domain -->
+		<ProjectReference Include="..\GourmetGo.Domain\GourmetGo.Domain.csproj" />
+</ItemGroup>
 
 </Project>

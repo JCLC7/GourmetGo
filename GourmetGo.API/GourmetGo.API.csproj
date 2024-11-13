@@ -10,9 +10,20 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controladores\" />
-  </ItemGroup>
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+	<ItemGroup>
+		<!-- Referencia a la capa Application -->
+		<ProjectReference Include="..\GourmetGo.Application\GourmetGo.Application.csproj" />
+		<!-- Referencia a la capa Domain -->
+		<ProjectReference Include="..\GourmetGo.Domain\GourmetGo.Domain.csproj" />
+		<ProjectReference Include="..\GourmetGo.Infrastructure\GourmetGo.Infrastructure.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Controladores\" />
+		
+	</ItemGroup>
 
 </Project>
