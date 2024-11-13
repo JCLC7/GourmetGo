@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Entidades\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Enums\" />
   </ItemGroup>
 
