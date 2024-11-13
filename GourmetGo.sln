@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GourmetGo.API", "GourmetGo.API\GourmetGo.API.csproj", "{DBF37215-2FB5-459D-B7FD-D3A179032532}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GourmetGo.Application", "GourmetGo.Application\GourmetGo.Application.csproj", "{694D64DA-334A-4331-9EE5-4FF723AE1F51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GourmetGo.Domain", "GourmetGo.Domain\GourmetGo.Domain.csproj", "{BC3BEBC7-870B-4C7A-8BC0-77C1060EFD7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GourmetGo.Infrastructure", "GourmetGo.Infrastructure\GourmetGo.Infrastructure.csproj", "{4D500678-CF6D-4267-9960-5DD19BEE1D25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBF37215-2FB5-459D-B7FD-D3A179032532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBF37215-2FB5-459D-B7FD-D3A179032532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBF37215-2FB5-459D-B7FD-D3A179032532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBF37215-2FB5-459D-B7FD-D3A179032532}.Release|Any CPU.Build.0 = Release|Any CPU
+		{694D64DA-334A-4331-9EE5-4FF723AE1F51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{694D64DA-334A-4331-9EE5-4FF723AE1F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{694D64DA-334A-4331-9EE5-4FF723AE1F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{694D64DA-334A-4331-9EE5-4FF723AE1F51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC3BEBC7-870B-4C7A-8BC0-77C1060EFD7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC3BEBC7-870B-4C7A-8BC0-77C1060EFD7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC3BEBC7-870B-4C7A-8BC0-77C1060EFD7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC3BEBC7-870B-4C7A-8BC0-77C1060EFD7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D500678-CF6D-4267-9960-5DD19BEE1D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D500678-CF6D-4267-9960-5DD19BEE1D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D500678-CF6D-4267-9960-5DD19BEE1D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D500678-CF6D-4267-9960-5DD19BEE1D25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
