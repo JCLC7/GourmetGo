@@ -6,7 +6,7 @@ namespace GourmetGo.API.Controladores
 {
     
         [ApiController]
-        [Route("api/[controller]")]
+        [Route("api/productos/[controller]")]
         public class ProductoController : ControllerBase
         {
             private readonly IProductosservices _service;
@@ -21,7 +21,7 @@ namespace GourmetGo.API.Controladores
             public async Task<IActionResult> GetAll()
             {
                 var productos = await _service.GetAllAsync();
-                return Ok(productos);
+                return new OkObjectResult(productos);
             }
 
             [HttpGet("{id}")]
@@ -32,11 +32,18 @@ namespace GourmetGo.API.Controladores
             }
 
             [HttpPost]
-            public async Task<IActionResult> Add(Producto producto)
+          
+            public async Task<IActionResult> AddAsync([FromBody] Producto producto)
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
                 await _service.AddAsync(producto);
-                return CreatedAtAction(nameof(GetById), new { id = producto.id_producto }, producto);
+                return Ok(new { Message = "Producto agregado exitosamente." });
             }
+        
 
             [HttpPut]
             public async Task<IActionResult> Update(Producto producto)

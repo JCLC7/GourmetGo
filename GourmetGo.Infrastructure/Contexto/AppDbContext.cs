@@ -14,6 +14,7 @@ namespace GourmetGo.Infrastructure.Contexto
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Producto> Productos { get; set; }
+        public DbSet<usuarios> Usuarios { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configuración adicional si es necesario

@@ -10,10 +10,11 @@
     <Folder Include="Datos\" />
     <Folder Include="Migraciones\" />
 	  <Folder Include="Contexto\" />
-	  <Folder Include="Repositorios\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
   </ItemGroup>
 	<ItemGroup>

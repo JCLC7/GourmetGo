@@ -1,6 +1,7 @@
 ﻿using GourmetGo.Domain.Entidades;
 using GourmetGo.Domain.Interfaces;
 using GourmetGo.Infrastructure.Contexto;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,13 +24,11 @@ namespace GourmetGo.Infrastructure.Repositorios
         {
             try
             {
+           
                 var productos = await _appDbContext.Productos.ToListAsync();
-                foreach (var producto in productos)
-                {
-                    // Verifica y maneja los valores nulos
-                    producto.imagen_url = producto.imagen_url ?? string.Empty;
-                }
+             
                 return productos;
+                // Devolver la lista de productos en formato JSON con un status 200 OK
             }
             catch (Exception ex)
             {
@@ -38,10 +37,11 @@ namespace GourmetGo.Infrastructure.Repositorios
                 throw new ApplicationException("Ocurrió un error al obtener los productos.", ex);
             }
         }
+    
 
 
 
-        public async Task<Producto> GetByIdAsync(int id)
+    public async Task<Producto> GetByIdAsync(int id)
         {
             return await _appDbContext.Productos.FindAsync(id);
         }
