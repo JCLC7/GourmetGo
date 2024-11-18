@@ -1,10 +1,16 @@
-﻿using GourmetGo.Domain.Entidades;
+﻿
+using GourmetGo.Domain.DTOs;
+using GourmetGo.Domain.Entidades;
 using GourmetGo.Domain.Interfaces;
 using GourmetGo.Infrastructure.Contexto;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,10 +19,13 @@ namespace GourmetGo.Infrastructure.Repositorios
     public class UsuariosRepository:IUsuariosRepository
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IConfiguration _configuration;
 
-        public UsuariosRepository(AppDbContext appDbContext)
+
+        public UsuariosRepository(AppDbContext appDbContext, IConfiguration configuration)
         {
             _appDbContext = appDbContext;
+            _configuration = configuration;
         }
         public async Task<IEnumerable<usuarios>> GetUsuarios()
         {
@@ -54,6 +63,56 @@ namespace GourmetGo.Infrastructure.Repositorios
         public async Task<usuarios> GetUsuariosByUsernameAsync(string username)
         {
             return await _appDbContext.Usuarios.FirstOrDefaultAsync( u => u.username == username);
+        }
+        public async Task<bool> RegistarUsuariosAsync(usuarios usuarios)
+        {
+            if (await UserExists(usuarios.username))
+                return false; // Usuario ya existe
+
+            // Hashear la contraseña
+            usuarios.password = BCrypt.Net.BCrypt.HashPassword(usuarios.password);
+
+            await AddUsuarioAsync(usuarios);
+            return true;
+        }
+        public async Task<string> AuthJWT(UsuarioLoginDto usuarioLogin) {
+            // Verificar si el usuario existe en la base de datos
+            var usuario = await UserExists(usuarioLogin.username);
+            var userdb = await GetUsuariosByUsernameAsync(usuarioLogin.username);
+
+            if (usuario == false)
+            {
+                return "usuario no existe"; // el usuario no existe
+            }
+            else if (!BCrypt.Net.BCrypt.Verify(usuarioLogin.password, userdb.password))
+            {
+                return "Contraseña incorrecta"; // La contraseña no coincide
+
+            }
+
+
+            // Generar el token JWT
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]);
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, userdb.username),
+                new Claim("rol", userdb.rol),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddMinutes(60),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = _configuration["JwtSettings:Issuer"],
+                Audience = _configuration["JwtSettings:Audience"]
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

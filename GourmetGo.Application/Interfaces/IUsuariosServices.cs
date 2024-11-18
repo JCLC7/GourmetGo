@@ -1,4 +1,5 @@
-﻿using GourmetGo.Application.DTOs;
+﻿
+using GourmetGo.Domain.DTOs;
 using GourmetGo.Domain.Entidades;
 using Microsoft.AspNetCore.Mvc;
 using System;

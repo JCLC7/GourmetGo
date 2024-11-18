@@ -1,6 +1,7 @@
-﻿using GourmetGo.Application.DTOs;
+﻿
 using GourmetGo.Application.Interfaces;
 using GourmetGo.Application.Servicios;
+using GourmetGo.Domain.DTOs;
 using GourmetGo.Domain.Entidades;
 using GourmetGo.Infrastructure.Contexto;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace GourmetGo.API.Controladores
 {
     [ApiController]
     [Route("api/usuarios/[controller]")]
+
     public class UsuariosController : ControllerBase
     {
         private readonly AppDbContext _context;

@@ -1,5 +1,6 @@
 ﻿using GourmetGo.Application.Interfaces;
 using GourmetGo.Domain.Entidades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GourmetGo.API.Controladores
@@ -7,7 +8,8 @@ namespace GourmetGo.API.Controladores
     
         [ApiController]
         [Route("api/productos/[controller]")]
-        public class ProductoController : ControllerBase
+        [Authorize]
+    public class ProductoController : ControllerBase
         {
             private readonly IProductosservices _service;
 

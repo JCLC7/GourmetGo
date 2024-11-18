@@ -1,10 +1,6 @@
-﻿using GourmetGo.Domain.Entidades;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using GourmetGo.Domain.DTOs;
+using GourmetGo.Domain.Entidades;
 
 namespace GourmetGo.Domain.Interfaces
 {
@@ -15,5 +11,7 @@ namespace GourmetGo.Domain.Interfaces
         Task AddUsuarioAsync(usuarios usuario);
         Task<bool> UserExists(string username);
         Task <usuarios> GetUsuariosByUsernameAsync(string username);
+        Task<bool> RegistarUsuariosAsync(usuarios usuarios);
+        Task<string> AuthJWT(UsuarioLoginDto usuarioLogin);
     }
 }
