@@ -24,8 +24,4 @@
 		<ProjectReference Include="..\GourmetGo.Infrastructure\GourmetGo.Infrastructure.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Controladores\" />
-	</ItemGroup>
-
 </Project>

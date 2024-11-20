@@ -29,7 +29,7 @@ namespace GourmetGo.Application.Servicios
            
         }
         public async Task<IEnumerable<usuarios>> GetUsuarios() => await _repository.GetUsuarios();
-        public async Task<bool> RegistrarUsuarioAsync(usuarios usuario) => await _repository.RegistarUsuariosAsync(usuario);
+        public async Task<bool> adduser(usuarios usuario) => await _repository.RegistarUsuariosAsync(usuario);
        
         public async Task<string> AuthenticateAsync(UsuarioLoginDto usuarioLogin) => await _repository.AuthJWT(usuarioLogin);
         

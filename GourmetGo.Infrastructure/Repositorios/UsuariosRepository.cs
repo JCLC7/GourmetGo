@@ -48,18 +48,15 @@ namespace GourmetGo.Infrastructure.Repositorios
         {
             return await _appDbContext.Usuarios.FindAsync(id);
         }
-
         public async Task AddUsuarioAsync(usuarios usuario)
         {
             await _appDbContext.Usuarios.AddAsync(usuario);
             await _appDbContext.SaveChangesAsync();
         }
-
         public async Task<bool> UserExists(string username)
         {
             return await _appDbContext.Usuarios.AnyAsync(u => u.username == username);
         }
-
         public async Task<usuarios> GetUsuariosByUsernameAsync(string username)
         {
             return await _appDbContext.Usuarios.FirstOrDefaultAsync( u => u.username == username);

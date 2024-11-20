@@ -44,6 +44,9 @@ builder.Services.AddScoped<IProductosRepository, ProductosRepository>();
 builder.Services.AddScoped<IProductosservices, Productoservices>();
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
 builder.Services.AddScoped<IUsuariosServices, UsuariosServices>();
+builder.Services.AddScoped<IMesaRepository, MesaRepository>();
+builder.Services.AddScoped<IMesaServices, MesasServices>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

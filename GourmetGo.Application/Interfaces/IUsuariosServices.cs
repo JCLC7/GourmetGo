@@ -13,7 +13,7 @@ namespace GourmetGo.Application.Interfaces
     public interface IUsuariosServices
     {
         Task<IEnumerable<usuarios>> GetUsuarios();
-        Task<bool> RegistrarUsuarioAsync(usuarios usuario);
+        Task<bool> adduser(usuarios usuario);
         Task<string> AuthenticateAsync(UsuarioLoginDto usuarioLogin);
     }
 }

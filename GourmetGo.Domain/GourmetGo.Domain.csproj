@@ -8,9 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
-	  <Folder Include="DTOs\" />
 	  <Folder Include="Entidades\" />
-	  <Folder Include="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

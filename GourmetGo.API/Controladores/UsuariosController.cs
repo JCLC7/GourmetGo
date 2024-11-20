@@ -27,12 +27,12 @@ namespace GourmetGo.API.Controladores
             return await _context.Usuarios.ToListAsync();
         }
         [HttpPost("register")]
-        public async Task<IActionResult> register([FromBody] usuarios usuario)
+        public async Task<IActionResult> adduser([FromBody] usuarios usuario)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            bool isRegistered = await _services.RegistrarUsuarioAsync(usuario);
+            bool isRegistered = await _services.adduser(usuario);
 
             if (!isRegistered)
                 return Conflict(new { Message = "El nombre de usuario ya está en uso." });
