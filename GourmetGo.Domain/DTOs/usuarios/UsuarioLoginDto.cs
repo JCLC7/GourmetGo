@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GourmetGo.Domain.DTOs
+namespace GourmetGo.Domain.DTOs.usuarios
 {
     public class UsuarioLoginDto
     {

@@ -16,6 +16,11 @@ namespace GourmetGo.Infrastructure.Contexto
         public DbSet<Producto> Productos { get; set; }
         public DbSet<usuarios> Usuarios { get; set; }
         public DbSet<mesas> Mesas { get; set; }
+        public DbSet<ventas> Ventas { get; set; }
+        public DbSet<detalles_venta> detalles_venta{ get; set; }
+        public DbSet<metodos_pago> metodos_pago { get; set; }
+
+        public DbSet<categorias> categorias { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configuración adicional si es necesario

@@ -1,11 +1,12 @@
 ﻿
 using GourmetGo.Application.Interfaces;
 using GourmetGo.Application.Servicios;
-using GourmetGo.Domain.DTOs;
+using GourmetGo.Domain.DTOs.usuarios;
 using GourmetGo.Domain.Entidades;
 using GourmetGo.Infrastructure.Contexto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace GourmetGo.API.Controladores
 {
@@ -14,17 +15,25 @@ namespace GourmetGo.API.Controladores
 
     public class UsuariosController : ControllerBase
     {
-        private readonly AppDbContext _context;
+   
         private readonly IUsuariosServices _services;
         public UsuariosController(AppDbContext context, IUsuariosServices uservices)
         {
-            _context = context;
+          
             _services = uservices;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<usuarios>>> GetUsuarios()
         {
-            return await _context.Usuarios.ToListAsync();
+            try
+            {
+                var usuarios = await _services.GetUsuarios();
+                return Ok(usuarios);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Error al obtener los usuarios.", Details = ex.Message });
+            }
         }
         [HttpPost("register")]
         public async Task<IActionResult> adduser([FromBody] usuarios usuario)
@@ -42,13 +51,23 @@ namespace GourmetGo.API.Controladores
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UsuarioLoginDto usuarioLogin)
         {
-            var token = await _services.AuthenticateAsync(usuarioLogin);
-            if (token == null)
-            {
-                return Unauthorized(new { Message = "Credenciales inválidas" });
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return Ok(new { Token = token });
+            try
+            {
+                var authResponse = await _services.AuthenticateAsync(usuarioLogin);
+                if (authResponse == null || !authResponse.Success)
+                {
+                    return Conflict(new { Message = authResponse?.Message ?? "Credenciales inválidas" });
+                }
+
+                return Ok(new { Token = authResponse.Token, Message = authResponse.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Error durante la autenticación.", Details = ex.Message });
+            }
         }
 
     }

@@ -15,5 +15,6 @@ namespace GourmetGo.Domain.Interfaces
         Task AddAsync(Producto producto);
         Task UpdateAsync(Producto producto);
         Task DeleteAsync(int id);
+       
     }
 }

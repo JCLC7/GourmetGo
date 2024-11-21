@@ -1,5 +1,4 @@
-﻿
-using GourmetGo.Domain.DTOs;
+﻿using GourmetGo.Domain.DTOs.usuarios;
 using GourmetGo.Domain.Entidades;
 using GourmetGo.Domain.Interfaces;
 using GourmetGo.Infrastructure.Contexto;
@@ -72,44 +71,71 @@ namespace GourmetGo.Infrastructure.Repositorios
             await AddUsuarioAsync(usuarios);
             return true;
         }
-        public async Task<string> AuthJWT(UsuarioLoginDto usuarioLogin) {
-            // Verificar si el usuario existe en la base de datos
-            var usuario = await UserExists(usuarioLogin.username);
-            var userdb = await GetUsuariosByUsernameAsync(usuarioLogin.username);
-
-            if (usuario == false)
+        public async Task<AuthResponseDto> AuthJWT(UsuarioLoginDto usuarioLogin)
+        {
+            try
             {
-                return "usuario no existe"; // el usuario no existe
+                // Verificar si el usuario existe en la base de datos
+                var userdb = await GetUsuariosByUsernameAsync(usuarioLogin.username);
+
+                if (userdb == null)
+                {
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "El usuario no existe."
+                    };
+                }
+
+                if (!BCrypt.Net.BCrypt.Verify(usuarioLogin.password, userdb.password))
+                {
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Contraseña incorrecta."
+                    };
+                }
+
+                // Generar el token JWT
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]);
+                var claims = new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, userdb.username),
+                    new Claim("rol", userdb.rol),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(claims),
+                    Expires = DateTime.UtcNow.AddMinutes(60),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                    Issuer = _configuration["JwtSettings:Issuer"],
+                    Audience = _configuration["JwtSettings:Audience"]
+                };
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                return new AuthResponseDto
+                {
+                    Success = true,
+                    Token = tokenHandler.WriteToken(token),
+                    Message = "Autenticación exitosa."
+                };
             }
-            else if (!BCrypt.Net.BCrypt.Verify(usuarioLogin.password, userdb.password))
+            catch (KeyNotFoundException ex)
             {
-                return "Contraseña incorrecta"; // La contraseña no coincide
-
+                return new AuthResponseDto
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
             }
-
-
-            // Generar el token JWT
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]);
-
-            var claims = new[]
+            catch (Exception ex)
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userdb.username),
-                new Claim("rol", userdb.rol),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(60),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                Issuer = _configuration["JwtSettings:Issuer"],
-                Audience = _configuration["JwtSettings:Audience"]
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+                throw new ApplicationException("Error durante el proceso de autenticación.", ex);
+            }
         }
     }
 }
+

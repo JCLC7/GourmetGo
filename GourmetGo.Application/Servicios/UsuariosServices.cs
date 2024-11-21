@@ -13,7 +13,7 @@ using System.Security.Claims;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
-using GourmetGo.Domain.DTOs;
+using GourmetGo.Domain.DTOs.usuarios;
 
 
 namespace GourmetGo.Application.Servicios
@@ -31,7 +31,7 @@ namespace GourmetGo.Application.Servicios
         public async Task<IEnumerable<usuarios>> GetUsuarios() => await _repository.GetUsuarios();
         public async Task<bool> adduser(usuarios usuario) => await _repository.RegistarUsuariosAsync(usuario);
        
-        public async Task<string> AuthenticateAsync(UsuarioLoginDto usuarioLogin) => await _repository.AuthJWT(usuarioLogin);
+        public async Task<AuthResponseDto> AuthenticateAsync(UsuarioLoginDto usuarioLogin) => await _repository.AuthJWT(usuarioLogin);
         
            
 

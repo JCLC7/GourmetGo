@@ -13,7 +13,15 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Agrega el servicio CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:5173")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()); // Asegúrate de incluir AllowCredentials si estás manejando cookies o autenticación basada en tokens de sesión
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
@@ -46,6 +54,13 @@ builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
 builder.Services.AddScoped<IUsuariosServices, UsuariosServices>();
 builder.Services.AddScoped<IMesaRepository, MesaRepository>();
 builder.Services.AddScoped<IMesaServices, MesasServices>();
+builder.Services.AddScoped<IVentaRepository, VentaRepository>();
+builder.Services.AddScoped<IVentasServices, VentaService>();
+builder.Services.AddScoped<IMetodosPagoRepository, MetodoPagoRepository>();
+builder.Services.AddScoped<IMetodoPagoService, MetodoPagoService>();
+builder.Services.AddScoped<IDetalleVentaRepository, DetallesVentas>();
+builder.Services.AddScoped<IDetalleVentaService, DetalleVentasSercives>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -87,12 +102,15 @@ builder.Services.AddSwaggerGen(c =>
 // Configurar Swagger para servir desde la raíz
 var app = builder.Build();
 
+app.UseCors("AllowSpecificOrigin");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseHttpsRedirection();
 app.UseAuthorization(); 
 app.MapControllers();

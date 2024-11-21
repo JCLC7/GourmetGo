@@ -1,5 +1,4 @@
-﻿
-using GourmetGo.Domain.DTOs;
+﻿using GourmetGo.Domain.DTOs.usuarios;
 using GourmetGo.Domain.Entidades;
 
 namespace GourmetGo.Domain.Interfaces
@@ -12,6 +11,6 @@ namespace GourmetGo.Domain.Interfaces
         Task<bool> UserExists(string username);
         Task <usuarios> GetUsuariosByUsernameAsync(string username);
         Task<bool> RegistarUsuariosAsync(usuarios usuarios);
-        Task<string> AuthJWT(UsuarioLoginDto usuarioLogin);
+        Task<AuthResponseDto> AuthJWT(UsuarioLoginDto usuarioLogin);
     }
 }

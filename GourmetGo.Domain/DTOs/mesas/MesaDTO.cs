@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GourmetGo.Domain.DTOs
+namespace GourmetGo.Domain.DTOs.mesas
 {
     public class MesaDTO
     {
-        public int NumeroMesa {  get; set; }
+        public int NumeroMesa { get; set; }
         public int capacidad { get; set; }
         public bool estado { get; set; }
         public string descripcion { get; set; }

@@ -1,4 +1,4 @@
-﻿using GourmetGo.Domain.DTOs;
+﻿using GourmetGo.Domain.DTOs.mesas;
 using GourmetGo.Domain.Entidades;
 using GourmetGo.Domain.Interfaces;
 using GourmetGo.Infrastructure.Contexto;
@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GourmetGo.Infrastructure.Repositorios
@@ -18,30 +17,55 @@ namespace GourmetGo.Infrastructure.Repositorios
         public MesaRepository(AppDbContext context)
         {
             _context = context;
-           
         }
-        public async Task<mesas> addMesas(mesas mesas)
+
+        // Agregar una nueva mesa
+        public async Task<mesas> AddMesasAsync(mesas mesas)
         {
             _context.Mesas.Add(mesas);
-             await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return mesas;
         }
 
+        // Obtener todas las mesas
         public async Task<IEnumerable<mesas>> GetAllAsync()
         {
-           return await _context.Mesas.ToListAsync();
+            return await _context.Mesas.ToListAsync();
         }
 
-        public async Task<bool> updateDispo(int id, MesaDTO mesaDTO)
+        // Obtener una mesa por su ID
+        public async Task<mesas> ObtenerMesaPorIdAsync(int idMesa)
         {
-            var mesa = await _context.Mesas.FindAsync(id);
-            if (mesa == null) return false;
+            return await VerificarMesaExiste(idMesa);
+        }
 
-            mesa.estado = mesaDTO.estado;
-            _context.Update(mesa);
-            
-            return await _context.SaveChangesAsync() >0 ;
+        // Cambiar el estado de una mesa
+        public async Task CambiarEstadoMesaAsync(int idMesa, bool nuevoEstado)
+        {
+            var mesa = await VerificarMesaExiste(idMesa);
 
+            mesa.estado = nuevoEstado; // Cambia el estado de la mesa
+            _context.Entry(mesa).Property(m => m.estado).IsModified = true;
+            await _context.SaveChangesAsync();
+        }
+
+        // Verificar si una mesa está ocupada
+        public async Task<bool> EsMesaOcupadaAsync(int idMesa)
+        {
+            var mesa = await VerificarMesaExiste(idMesa);
+            return mesa.estado; // Retorna true si está ocupada, false si está libre
+        }
+
+        // Método privado para validar la existencia de una mesa
+        public async Task<mesas> VerificarMesaExiste(int idMesa)
+        {
+            var mesa = await _context.Mesas.FindAsync(idMesa);
+            if (mesa == null)
+            {
+                throw new InvalidOperationException("La mesa no existe.");
+            }
+            return mesa;
         }
     }
 }
+

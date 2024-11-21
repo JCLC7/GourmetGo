@@ -1,5 +1,4 @@
-﻿
-using GourmetGo.Domain.DTOs;
+﻿using GourmetGo.Domain.DTOs.usuarios;
 using GourmetGo.Domain.Entidades;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,6 +13,6 @@ namespace GourmetGo.Application.Interfaces
     {
         Task<IEnumerable<usuarios>> GetUsuarios();
         Task<bool> adduser(usuarios usuario);
-        Task<string> AuthenticateAsync(UsuarioLoginDto usuarioLogin);
+        Task<AuthResponseDto> AuthenticateAsync(UsuarioLoginDto usuarioLogin);
     }
 }
