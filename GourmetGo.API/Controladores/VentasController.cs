@@ -84,6 +84,11 @@ namespace GourmetGo.API.Controladores
         [HttpPost("agregar-producto")]
         public async Task<IActionResult> AgregarProducto([FromBody] AgregarProductoDto dto)
         {
+            if (dto == null)
+            {
+                return BadRequest(new { error = "Los datos del producto son obligatorios." });
+            }
+
             try
             {
                 await _ventaService.AgregarProductoADetalleAsync(dto);
@@ -91,9 +96,35 @@ namespace GourmetGo.API.Controladores
             }
             catch (InvalidOperationException ex)
             {
+                // Excepción de validación o negocio
                 return BadRequest(new { error = ex.Message });
             }
+            catch (Exception ex)
+            {
+                // Excepción inesperada
+                return StatusCode(500, new { error = $"Ocurrió un error interno: {ex.Message}" });
+            }
         }
+
+
+        [HttpPut("{idVenta}/cerrar")]
+        public async Task<IActionResult> CerrarVenta(int idVenta)
+        {
+            try
+            {
+                await _ventaService.CerrarVentaAsync(idVenta);
+                return Ok(new { Message = "La venta se cerró exitosamente y la mesa está disponible nuevamente." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = $"Error al cerrar la venta: {ex.Message}" });
+            }
+        }
+
     }
 
 }

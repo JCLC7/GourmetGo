@@ -28,6 +28,8 @@ namespace GourmetGo.Application.Interfaces
 
         // Agregar un producto a los detalles de una venta existente
         Task AgregarProductoADetalleAsync(AgregarProductoDto dto);
+
+        Task CerrarVentaAsync(int idVenta);
     }
 }
 

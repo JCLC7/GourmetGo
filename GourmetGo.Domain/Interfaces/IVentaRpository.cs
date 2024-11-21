@@ -1,4 +1,5 @@
-﻿using GourmetGo.Domain.DTOs.ventas;
+﻿using GourmetGo.Domain.DTOs.productos;
+using GourmetGo.Domain.DTOs.ventas;
 using GourmetGo.Domain.Entidades;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,9 @@ namespace GourmetGo.Domain.Interfaces
         Task<bool> DeleteVentaAsync(int id);
         Task<ventas> GetVentaPendientePorMesaAsync(int idMesa);
         //TRATAR DE CORREGIR ESTA TASK ACTUALZIARVENTAS ASYNC
-        Task ActualizarVentaAsync(ventas venta);
+        Task ActualizarVentaAsync(AgregarProductoDto dto);
+        Task CerrarVentaAsync(int idVenta);
+        Task<int> AbrirMesaAsync(int idMesa);
 
     }
 

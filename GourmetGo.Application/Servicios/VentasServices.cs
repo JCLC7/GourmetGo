@@ -50,118 +50,23 @@ namespace GourmetGo.Application.Servicios
 
 
 
-        public async Task<bool> UpdateVentaAsync(int id, VentaUpdateDto dto)
-        {
-            // Validar el total
-            if (dto.Total < 0)
-            {
-                throw new ArgumentException("El total no puede ser negativo.");
-            }
-
-            // Validar estado permitido
-            var estadosPermitidos = new[] { "pendiente", "pagada" };
-            if (!estadosPermitidos.Contains(dto.Estado.ToLower()))
-            {
-                throw new ArgumentException("Estado inválido.");
-            }
-
-            // Validar transición de estado
-            var venta = await _ventaRepository.GetVentaByIdAsync(id);
-            if (venta == null)
-            {
-                throw new InvalidOperationException("La venta no existe.");
-            }
-
-            if (venta.estado == "pagada" && dto.Estado.ToLower() == "pendiente")
-            {
-                throw new InvalidOperationException("No se puede cambiar una venta pagada a pendiente.");
-            }
-
-            return await _ventaRepository.UpdateVentaAsync(id, dto);
-        }
+        public async Task<bool> UpdateVentaAsync(int id, VentaUpdateDto dto)  => await _ventaRepository.UpdateVentaAsync(id, dto);
+      
 
 
 
         public async Task<bool> DeleteVentaAsync(int id) =>  await _ventaRepository.DeleteVentaAsync(id);
 
 
-        public async Task<int> AbrirMesaAsync(int idMesa)
-        {
-            // Verificar si ya existe una venta pendiente para la mesa
-            var venta = await _ventaRepository.GetVentaPendientePorMesaAsync(idMesa);
-            if (venta != null)
-            {
-                throw new InvalidOperationException("La mesa está abierta. No se puede abrir otra venta, ya hay una venta abierta para mesa con el id : "+venta.id_mesa+" esta asociada con el id de venta  : " + venta.id_venta); // Si existe, retorna la venta pendiente
-            }
-
-            // Verificar si la mesa está ocupada
-            var mesaOcupada = await _mesaRepository.EsMesaOcupadaAsync(idMesa); // Implementar este método
-            if (mesaOcupada)
-            {
-                throw new InvalidOperationException("La mesa está ocupada. No se puede abrir otra venta.");
-            }
-
-            // Crear una nueva venta pendiente
-            var nuevaVenta = new ventas
-            {
-                id_usuario = 1,
-                id_mesa = idMesa,
-                id_metodo = 1,
-                estado = "pendiente",
-                fecha = DateTime.UtcNow,
-                total = 0
-            };
-          
-
-            return await _ventaRepository.CreateVentaAsync(nuevaVenta);
-        }
+        public async Task<int> AbrirMesaAsync(int idMesa) => await _ventaRepository.AbrirMesaAsync(idMesa);
+      
 
 
-        public async Task AgregarProductoADetalleAsync(AgregarProductoDto dto)
-        {
-            // Validar cantidad positiva
-            if (dto.Cantidad <= 0)
-            {
-                throw new ArgumentException("La cantidad debe ser mayor a 0.");
-            }
+        public async Task AgregarProductoADetalleAsync(AgregarProductoDto dto) => await _ventaRepository.ActualizarVentaAsync(dto);
+      
 
-            // Validar venta pendiente
-            var venta = await _ventaRepository.GetVentaPendientePorMesaAsync(dto.id_mesa);
-            if (venta == null)
-            {
-                throw new InvalidOperationException("La venta no existe o no está pendiente.");
-            }
+        public async Task CerrarVentaAsync(int idVenta) => await _ventaRepository.CerrarVentaAsync(idVenta);
 
-            // Validar producto y stock
-            var producto = await _productosRepository.GetByIdAsync(dto.IdProducto);
-            if (producto == null || producto.stock < dto.Cantidad)
-            {
-                throw new InvalidOperationException("El producto no existe o no tiene suficiente stock.");
-            }
-
-            // Calcular subtotal de manera explícita
-            var subtotal = (decimal)dto.Cantidad * (decimal)producto.precio;
-
-            // Agregar detalle de venta
-            var detalle = new detalles_venta
-            {
-                id_venta = dto.IdVenta,
-                id_producto = dto.IdProducto,
-                cantidad = dto.Cantidad,
-                precio_unitario = (decimal)producto.precio,
-                subtotal = subtotal
-            };
-
-            await _detalleVentaRepository.AgregarDetalleAsync(detalle);
-
-            // Actualizar stock del producto
-            producto.stock -= dto.Cantidad;
-            await _productosRepository.UpdateAsync(producto);
-
-            // Actualizar total de la venta
-            venta.total += subtotal;
-            await _ventaRepository.ActualizarVentaAsync(venta);
-        }
 
         /*public async Task AgregarProductoADetalleAsync(AgregarProductoDto dto)
 {
