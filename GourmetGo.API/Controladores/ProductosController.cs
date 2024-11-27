@@ -54,11 +54,11 @@ namespace GourmetGo.API.Controladores
                 return NoContent();
             }
 
-            [HttpDelete("{id}")]
+            [HttpPut("{id}")]
             public async Task<IActionResult> Delete(int id)
             {
                 await _service.DeleteAsync(id);
-                return Ok(new { Message = "Producto desactivado exitosamente." });
+                return Ok(new { Message = "SE CAMBIO EL ESTADO DEL PRODUCTO EXITOSAMENTE." });
         }
         }
     }

@@ -67,7 +67,7 @@ namespace GourmetGo.Infrastructure.Repositorios
             }
 
             // Desactivar el producto
-            producto.activo = false;
+            producto.activo = !producto.activo;
 
             // Guardar cambios en la base de datos
             _appDbContext.Productos.Update(producto);
