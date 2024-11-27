@@ -8,7 +8,7 @@ namespace GourmetGo.API.Controladores
     
         [ApiController]
         [Route("api/productos/[controller]")]
-        [Authorize]
+       
     public class ProductoController : ControllerBase
         {
             private readonly IProductosservices _service;
@@ -58,8 +58,8 @@ namespace GourmetGo.API.Controladores
             public async Task<IActionResult> Delete(int id)
             {
                 await _service.DeleteAsync(id);
-                return NoContent();
-            }
+                return Ok(new { Message = "Producto desactivado exitosamente." });
+        }
         }
     }
 

@@ -18,7 +18,7 @@ namespace GourmetGo.API.Controladores
         }
 
         // Agregar una nueva mesa
-        [HttpPost]
+        [HttpPost("agregar")]
         public async Task<IActionResult> AddMesa([FromBody] MesaDTO mesaDto)
         {
             if (mesaDto == null)
@@ -38,7 +38,7 @@ namespace GourmetGo.API.Controladores
         }
 
         // Obtener todas las mesas
-        [HttpGet]
+        [HttpGet("obtener")]
         public async Task<IActionResult> GetAllMesas()
         {
             try

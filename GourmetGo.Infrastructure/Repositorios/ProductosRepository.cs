@@ -58,10 +58,19 @@ namespace GourmetGo.Infrastructure.Repositorios
             await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeactivateAsync(int id)
         {
             var producto = await GetByIdAsync(id);
-            _appDbContext.Productos.Remove(producto);
+            if (producto == null)
+            {
+                throw new KeyNotFoundException($"No se encontró un producto con el ID {id}");
+            }
+
+            // Desactivar el producto
+            producto.activo = false;
+
+            // Guardar cambios en la base de datos
+            _appDbContext.Productos.Update(producto);
             await _appDbContext.SaveChangesAsync();
         }
     }

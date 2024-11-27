@@ -151,6 +151,10 @@ namespace GourmetGo.Infrastructure.Repositorios
             {
                 throw new InvalidOperationException("El producto no existe o no tiene suficiente stock.");
             }
+            if (!producto.activo)
+            {
+                throw new InvalidOperationException("no se pueden agregar productos desactivados");
+            }
 
             // Calcular subtotal de manera explícita
             var subtotal = (decimal)dto.Cantidad * (decimal)producto.precio;

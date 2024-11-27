@@ -27,5 +27,7 @@ namespace GourmetGo.Domain.Entidades
      
         public string? imagen_url { get; set; }
 
+        public bool activo { get; set; }
+
     }
 }

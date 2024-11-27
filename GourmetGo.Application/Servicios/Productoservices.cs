@@ -23,7 +23,7 @@ namespace GourmetGo.Application.Servicios
         public async Task<Producto> GetByIdAsync(int id) => await _repository.GetByIdAsync(id);
         public async Task AddAsync(Producto producto) => await _repository.AddAsync(producto);
         public async Task UpdateAsync(Producto producto) => await _repository.UpdateAsync(producto);
-        public async Task DeleteAsync(int id) => await _repository.DeleteAsync(id);
+        public async Task DeleteAsync(int id) => await _repository.DeactivateAsync(id);
 
     }
 }
